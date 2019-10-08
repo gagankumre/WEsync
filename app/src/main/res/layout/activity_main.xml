@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:paddingLeft="30dp"
-            android:text="My Libaray"
+            android:text="My Library"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
