@@ -21,6 +21,7 @@ import com.brocode.wesync.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SongsTab extends Fragment {
 
@@ -44,9 +45,12 @@ public class SongsTab extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        directory = new File("/mnt/");
+//        directory = new File("/mnt/");
         songList = new ArrayList<>();
-        getSongList(directory);
+        directory = new File("/mnt/sdcard/Music/");
+        File listFiles[] = directory.listFiles();
+        songList.addAll(Arrays.asList(listFiles));
+//        getSongList(directory);
     }
 
 //    public void getSongList() {

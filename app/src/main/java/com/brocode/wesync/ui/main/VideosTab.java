@@ -16,6 +16,7 @@ import com.brocode.wesync.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VideosTab extends Fragment {
 
@@ -41,9 +42,12 @@ public class VideosTab extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        directory = new File("/mnt/");
+//        directory = new File("/mnt/");
         videoList = new ArrayList<>();
-        getVideoList(directory);
+        directory = new File("/mnt/sdcard/Videos/");
+        File listFiles[] = directory.listFiles();
+        videoList.addAll(Arrays.asList(listFiles));
+//        getVideoList(directory);
     }
 
     private void getVideoList(File directory) {
