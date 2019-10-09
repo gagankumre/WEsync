@@ -16,18 +16,20 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.brocode.wesync.GlobalData;
 import com.brocode.wesync.R;
-import com.brocode.wesync.VideoPlayerActivity;
+import com.brocode.wesync.PlayerActivity;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class VideoRvAdapter extends RecyclerView.Adapter<VideoRvAdapter.MyVideoHolder> {
 
     Context mContext;
     ArrayList<File> videoList;
+
+//    String last
 
     public VideoRvAdapter(Context mContext, ArrayList<File> videoList) {
         this.mContext = mContext;
@@ -53,11 +55,13 @@ public class VideoRvAdapter extends RecyclerView.Adapter<VideoRvAdapter.MyVideoH
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+                GlobalData.deviceRole=GlobalData.DeviceRole.HOST;
+                Intent intent = new Intent(mContext, PlayerActivity.class);
                 Bundle args = new Bundle();
                 args.putSerializable("ARRAYLIST",(Serializable)videoList);
                 intent.putExtra("BUNDLE",args);
                 intent.putExtra("position", holder.getAdapterPosition());
+                intent.putExtra("Data", "DataToBeHosted");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

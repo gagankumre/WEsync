@@ -1,31 +1,24 @@
 package com.brocode.wesync.ui.main;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.brocode.wesync.GlobalData;
 import com.brocode.wesync.R;
-import com.brocode.wesync.VideoPlayerActivity;
+import com.brocode.wesync.PlayerActivity;
 
 import java.io.File;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SongRvAdapter extends RecyclerView.Adapter<SongRvAdapter.MyViewHolder> {
 
@@ -54,17 +47,16 @@ public class SongRvAdapter extends RecyclerView.Adapter<SongRvAdapter.MyViewHold
         holder.artistName.setText("Artist");
         holder.location.setText(songList.get(position).getPath());
 
-        holder.mSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, VideoPlayerActivity.class);
-                Bundle args = new Bundle();
-                args.putSerializable("ARRAYLIST",(Serializable)songList);
-                intent.putExtra("BUNDLE",args);
-                intent.putExtra("position", holder.getAdapterPosition());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-            }
+        holder.mSong.setOnClickListener(v -> {
+            GlobalData.deviceRole=GlobalData.DeviceRole.HOST;
+            Intent intent = new Intent(mContext, PlayerActivity.class);
+            Bundle args = new Bundle();
+            args.putSerializable("ARRAYLIST",(Serializable)songList);
+            intent.putExtra("BUNDLE",args);
+            intent.putExtra("position", holder.getAdapterPosition());
+            intent.putExtra("Data", "DataToBeHosted");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
         });
     }
 
