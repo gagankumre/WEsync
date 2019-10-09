@@ -1,5 +1,6 @@
 package com.brocode.wesync;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -7,14 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,41 +31,48 @@ public class MainActivity extends AppCompatActivity {
     NsdClient nsdClient;
     RecyclerView.LayoutManager layoutManager;
     HostListAdapter adapter;
-    ArrayList<Host> hostList;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        // Get Read/Write permissions
-//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-//                != PackageManager.PERMISSION_GRANTED ||
-//                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(this,
-//                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE,
-//                            Manifest.permission.WRITE_EXTERNAL_STORAGE},12);
-//        }
+        linearLayout =  findViewById(R.id.linearLayout);
 
         SharedPreferences sharedPrefs = getSharedPreferences(getString(R.string.sharedPrefsKey), MODE_PRIVATE);
         boolean isFirstRun = sharedPrefs.getBoolean(getString(R.string.isFirstRunSharedPrefsKey),true);
         if(isFirstRun) {
-            Random random = new Random();
-            int x = random.nextInt(100000);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-            String s = GlobalData.nick;
-            s+=Integer.toString(x);
+            final EditText edittext = new EditText(this);
+            alert.setTitle("Set Your Name");
 
-            GlobalData.nick = s;
-            SharedPreferences.Editor sharedPrefsEditor= sharedPrefs.edit();
+            alert.setView(edittext);
 
-            sharedPrefsEditor.putString(getString(R.string.nickSharedPrefsKey), GlobalData.nick);
-            sharedPrefsEditor.putBoolean(getString(R.string.isFirstRunSharedPrefsKey), false);
-            sharedPrefsEditor.commit();
+            alert.setPositiveButton("OK", (dialog, whichButton) -> {
+                String name = edittext.getText().toString();
+                GlobalData.nick = name;
+                SharedPreferences.Editor sharedPrefsEditor= sharedPrefs.edit();
+
+                sharedPrefsEditor.putString(getString(R.string.nickSharedPrefsKey), name);
+                sharedPrefsEditor.putBoolean(getString(R.string.isFirstRunSharedPrefsKey), false);
+                sharedPrefsEditor.commit();
+            });
+//
+//            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                    // what ever you want to do with No option.
+//                }
+//            });
+
+            alert.show();
         }
-        GlobalData.nick = sharedPrefs.getString("nickSyncPlayerUser", "NoNick");
+        GlobalData.nick = sharedPrefs.getString(getString(R.string.nickSharedPrefsKey), "NoNick");
+        String name = sharedPrefs.getString(getString(R.string.nickSharedPrefsKey),"NoNick");
+        Snackbar snackbar = Snackbar
+                .make(linearLayout, name, Snackbar.LENGTH_LONG);
+        snackbar.show();
 
 
         refresh =findViewById(R.id.refresh);

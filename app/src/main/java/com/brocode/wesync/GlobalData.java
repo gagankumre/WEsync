@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class GlobalData {
 
-    static String nick = "Verma";
+    static String nick = "NoNick";
     public static DeviceRole deviceRole;
     static String password;
 
