@@ -5,11 +5,13 @@ import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +30,7 @@ public class SongsTab extends Fragment {
     RecyclerView songrv;
     private ArrayList<File> songList;
     File directory;
+    final String MEDIA_PATH = Environment.getExternalStorageDirectory()+"/Music/";
 
     @Nullable
     @Override
@@ -47,10 +50,14 @@ public class SongsTab extends Fragment {
 
 //        directory = new File("/mnt/");
         songList = new ArrayList<>();
-        directory = new File("/mnt/sdcard/Music/");
-        File listFiles[] = directory.listFiles();
-        songList.addAll(Arrays.asList(listFiles));
-//        getSongList(directory);
+        directory = new File(MEDIA_PATH);
+
+//        Toast.makeText(getContext(), directory.toString(), Toast.LENGTH_LONG).show();
+
+//        File listFiles[] = directory.listFiles();
+//        if(listFiles!=null)
+//            songList.addAll(Arrays.asList(listFiles));
+        getSongList(directory);
     }
 
 //    public void getSongList() {

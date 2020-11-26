@@ -1,6 +1,7 @@
 package com.brocode.wesync.ui.main;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class VideosTab extends Fragment {
     File directory;
 
     ArrayList<File> videoList;
+    final String MEDIA_PATH = Environment.getExternalStorageDirectory()+"/Videos/";
 
     @Nullable
     @Override
@@ -44,10 +46,11 @@ public class VideosTab extends Fragment {
 
 //        directory = new File("/mnt/");
         videoList = new ArrayList<>();
-        directory = new File("/mnt/sdcard/Videos/");
-        File listFiles[] = directory.listFiles();
-        videoList.addAll(Arrays.asList(listFiles));
-//        getVideoList(directory);
+        directory = new File(MEDIA_PATH);
+//        File listFiles[] = directory.listFiles();
+//        if(listFiles!=null)
+//            videoList.addAll(Arrays.asList(listFiles));
+        getVideoList(directory);
     }
 
     private void getVideoList(File directory) {

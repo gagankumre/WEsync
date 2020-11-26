@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             if(recyclerView.getVisibility()==View.VISIBLE){
                 recyclerView.setVisibility(View.GONE);
                 refresh.setVisibility(View.GONE);
+                nsdClient.stopDiscovery();
                 adapter.clear();
             }else{
 
